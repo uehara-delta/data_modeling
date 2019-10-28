@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_28_080433) do
+ActiveRecord::Schema.define(version: 2019_10_28_092807) do
 
   create_table "comments", force: :cascade do |t|
     t.integer "instructor_id", null: false
@@ -20,6 +20,21 @@ ActiveRecord::Schema.define(version: 2019_10_28_080433) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["instructor_id"], name: "index_comments_on_instructor_id"
     t.index ["reservation_id"], name: "index_comments_on_reservation_id", unique: true
+  end
+
+  create_table "countries", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "exportables", force: :cascade do |t|
+    t.integer "product_id", null: false
+    t.integer "country_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["country_id"], name: "index_exportables_on_country_id"
+    t.index ["product_id"], name: "index_exportables_on_product_id"
   end
 
   create_table "instructors", force: :cascade do |t|
@@ -35,6 +50,12 @@ ActiveRecord::Schema.define(version: 2019_10_28_080433) do
     t.datetime "updated_at", precision: 6, null: false
     t.integer "instructor_id"
     t.index ["instructor_id"], name: "index_lessons_on_instructor_id"
+  end
+
+  create_table "products", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "relationships", force: :cascade do |t|
@@ -71,6 +92,8 @@ ActiveRecord::Schema.define(version: 2019_10_28_080433) do
 
   add_foreign_key "comments", "instructors"
   add_foreign_key "comments", "reservations"
+  add_foreign_key "exportables", "countries"
+  add_foreign_key "exportables", "products"
   add_foreign_key "reservations", "lessons"
   add_foreign_key "reservations", "students"
 end
