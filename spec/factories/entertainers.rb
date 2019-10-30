@@ -1,5 +1,4 @@
 FactoryBot.define do
-  factory :challenge4 do
-    
+  factory :entertainer do
   end
 end

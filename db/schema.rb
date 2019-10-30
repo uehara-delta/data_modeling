@@ -10,7 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_29_024523) do
+ActiveRecord::Schema.define(version: 2019_10_29_095545) do
+
+  create_table "belongings", force: :cascade do |t|
+    t.integer "entertainer_id", null: false
+    t.integer "office_id", null: false
+    t.date "start_date"
+    t.date "end_date"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["entertainer_id"], name: "index_belongings_on_entertainer_id"
+    t.index ["office_id"], name: "index_belongings_on_office_id"
+  end
 
   create_table "blood_pressures", force: :cascade do |t|
     t.integer "top_number"
@@ -41,6 +52,21 @@ ActiveRecord::Schema.define(version: 2019_10_29_024523) do
 
   create_table "countries", force: :cascade do |t|
     t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "entertainer_names", force: :cascade do |t|
+    t.string "name"
+    t.date "start_date"
+    t.date "end_date"
+    t.integer "entertainer_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["entertainer_id"], name: "index_entertainer_names_on_entertainer_id"
+  end
+
+  create_table "entertainers", force: :cascade do |t|
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -85,6 +111,12 @@ ActiveRecord::Schema.define(version: 2019_10_29_024523) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "offices", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "patients", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
@@ -97,12 +129,40 @@ ActiveRecord::Schema.define(version: 2019_10_29_024523) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "program_names", force: :cascade do |t|
+    t.string "name"
+    t.date "start_date"
+    t.date "end_date"
+    t.integer "program_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["program_id"], name: "index_program_names_on_program_id"
+  end
+
+  create_table "programs", force: :cascade do |t|
+    t.date "start_date"
+    t.date "end_date"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "pulses", force: :cascade do |t|
     t.integer "value"
     t.integer "measurement_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["measurement_id"], name: "index_pulses_on_measurement_id"
+  end
+
+  create_table "regular_performers", force: :cascade do |t|
+    t.integer "program_id", null: false
+    t.integer "entertainer_id", null: false
+    t.date "start_date"
+    t.date "end_date"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["entertainer_id"], name: "index_regular_performers_on_entertainer_id"
+    t.index ["program_id"], name: "index_regular_performers_on_program_id"
   end
 
   create_table "relationships", force: :cascade do |t|
@@ -137,15 +197,21 @@ ActiveRecord::Schema.define(version: 2019_10_29_024523) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  add_foreign_key "belongings", "entertainers"
+  add_foreign_key "belongings", "offices"
   add_foreign_key "blood_pressures", "measurements"
   add_foreign_key "body_temperatures", "measurements"
   add_foreign_key "comments", "instructors"
   add_foreign_key "comments", "reservations"
+  add_foreign_key "entertainer_names", "entertainers"
   add_foreign_key "exportables", "countries"
   add_foreign_key "exportables", "products"
   add_foreign_key "measurements", "measurers"
   add_foreign_key "measurements", "patients"
+  add_foreign_key "program_names", "programs"
   add_foreign_key "pulses", "measurements"
+  add_foreign_key "regular_performers", "entertainers"
+  add_foreign_key "regular_performers", "programs"
   add_foreign_key "reservations", "lessons"
   add_foreign_key "reservations", "students"
 end
