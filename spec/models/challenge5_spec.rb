@@ -38,7 +38,7 @@ RSpec.describe '課題5', type: :model do
     end
   end
 
-  it "ある番組でレギュラー出演している芸能人を管理できること" do
+  it "ある時点でレギュラー出演している芸能人を、そのときの名前、その時の所属事務所で把握したい" do
     program.program_names.create(name: "program 1", start_date: "2010-04-01", end_date: "2016-09-30")
     program.program_names.create(name: "program 2", start_date: "2016-10-01", end_date: nil)
 
@@ -55,7 +55,6 @@ RSpec.describe '課題5', type: :model do
     entertainer1.belongings.create(office: office3, start_date: "2018-04-01", end_date: nil)
     entertainer2.belongings.create(office: office2, start_date: nil, end_date: nil)
 
-    # ある時点でレギュラー出演している芸能人を、その時の名前、その時の所属事務所で把握したい
     aggregate_failures do
       expect(program.performer_names_at("2010-04-01")).to contain_exactly *%w(entertainer1-1)
       expect(program.performer_names_at("2014-04-01")).to contain_exactly *%w(entertainer1-1 entertainer2)
